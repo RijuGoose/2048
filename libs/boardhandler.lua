@@ -32,16 +32,6 @@ function BoardHandler.newBoard(size)
     end
 end
 
-function BoardHandler.logCurrentState()
-    for i = 1, BoardHandler.size do
-        for j = 1, BoardHandler.size do
-            io.write(tostring(BoardHandler.board[i][j].number) .. "\t")
-        end
-        print("")
-    end
-    print("")
-end
-
 local function isBoardFull()
     for i = 1, BoardHandler.size do
         for j = 1, BoardHandler.size do

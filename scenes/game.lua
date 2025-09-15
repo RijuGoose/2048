@@ -102,7 +102,6 @@ function scene:create(event)
 
     BoardHandler.newBoard(boardSize)
     local newNumber = BoardHandler.addRandomNumber()
-    BoardHandler.logCurrentState()
 
     local boardBase = display.newGroup()
     boardBase.anchorChildren = true
@@ -162,7 +161,6 @@ function scene:show(event)
                     local afterUpdate = function()
                         local newNumber = BoardHandler.addRandomNumber()
                         scene.stage:insert(newNumber)
-                        BoardHandler.logCurrentState()
                         isMoving = false
                     end
                     if (math.abs(xDiff) > 100) then
