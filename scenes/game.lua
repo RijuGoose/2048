@@ -13,7 +13,6 @@ local screenWidth = const.screenW
 local boardSize = 4
 local slice = screenWidth / boardSize
 
-local Tile = require("libs.tile")
 local Square = require("libs.square")
 local BoardHandler = require("libs.boardhandler")
 
@@ -64,14 +63,14 @@ local function updateBoard(movedTiles, direction, afterUpdate)
                             BoardHandler.uiBoard[row][col]:removeSelf()
                             BoardHandler.uiBoard[moved.toRow][moved.toCol] =
                                 Square.create(moved.toCol, moved.toRow,
-                                    BoardHandler.board[moved.toRow][moved.toCol].number)
+                                    BoardHandler.board[moved.toRow][moved.toCol])
                             scene.stage:insert(BoardHandler.uiBoard[moved.toRow][moved.toCol])
                         elseif (moved.action == BoardHandler.ACTION_TILE_MERGED) then
                             BoardHandler.uiBoard[row][col]:removeSelf()
                             BoardHandler.uiBoard[moved.toRow][moved.toCol]:removeSelf()
                             BoardHandler.uiBoard[moved.toRow][moved.toCol] =
                                 Square.create(moved.toCol, moved.toRow,
-                                    BoardHandler.board[moved.toRow][moved.toCol].number)
+                                    BoardHandler.board[moved.toRow][moved.toCol])
                             scene.stage:insert(BoardHandler.uiBoard[moved.toRow][moved.toCol])
 
                         end

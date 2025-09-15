@@ -15,7 +15,6 @@ BoardHandler.DIRECTION_MOVE_DOWN = "move_down"
 BoardHandler.DIRECTION_MOVE_LEFT = "move_left"
 BoardHandler.DIRECTION_MOVE_RIGHT = "move_right"
 
-local Tile = require("libs.tile")
 local createMatrix
 local handleNeighborTiles
 local addRandomNumber
@@ -27,7 +26,7 @@ function BoardHandler.newBoard(size)
         BoardHandler.board[i] = {}
         BoardHandler.uiBoard[i] = {}
         for j = 1, size do
-            BoardHandler.board[i][j] = Tile:new(nil)
+            BoardHandler.board[i][j] = nil
         end
     end
 end
@@ -35,7 +34,7 @@ end
 local function isBoardFull()
     for i = 1, BoardHandler.size do
         for j = 1, BoardHandler.size do
-            if (BoardHandler.board[i][j].number == nil) then
+            if (BoardHandler.board[i][j] == nil) then
                 return false
             end
         end
@@ -51,11 +50,11 @@ function BoardHandler.addRandomNumber()
         repeat
             startRow = math.random(1, BoardHandler.size)
             startCol = math.random(1, BoardHandler.size)
-        until BoardHandler.board[startRow][startCol].number == nil
+        until BoardHandler.board[startRow][startCol] == nil
 
         local sq = Square.create(startCol, startRow, 2)
         BoardHandler.uiBoard[startRow][startCol] = sq
-        BoardHandler.board[startRow][startCol]:setNumber(2)
+        BoardHandler.board[startRow][startCol] = 2
 
         return sq
     end
@@ -177,7 +176,7 @@ function BoardHandler.moveTiles(direction)
 end
 
 handleNeighborTiles = function(baseTileRow, baseTileCol, direction)
-    local baseTileNumber = BoardHandler.board[baseTileRow][baseTileCol].number
+    local baseTileNumber = BoardHandler.board[baseTileRow][baseTileCol]
 
     local neighborRow, neighborCol
     local tileIsInsideBoard
@@ -206,13 +205,13 @@ handleNeighborTiles = function(baseTileRow, baseTileCol, direction)
         }
     end
 
-    local neighborNumber = BoardHandler.board[neighborRow][neighborCol].number
+    local neighborNumber = BoardHandler.board[neighborRow][neighborCol]
 
     if baseTileNumber ~= nil then
         if baseTileNumber == neighborNumber then
             -- BoardHandler.board[baseTileRow][baseTileCol]:setNumber(baseTileNumber * 2)
-            BoardHandler.board[baseTileRow][baseTileCol]:setNumber(baseTileNumber + 1)
-            BoardHandler.board[neighborRow][neighborCol]:setNumber(nil)
+            BoardHandler.board[baseTileRow][baseTileCol] = baseTileNumber + 1
+            BoardHandler.board[neighborRow][neighborCol] = nil
             return {
                 action = BoardHandler.ACTION_TILE_MERGED,
                 toRow = baseTileRow,
@@ -221,8 +220,8 @@ handleNeighborTiles = function(baseTileRow, baseTileCol, direction)
         end
     else
         if neighborNumber ~= nil then
-            BoardHandler.board[baseTileRow][baseTileCol]:setNumber(neighborNumber)
-            BoardHandler.board[neighborRow][neighborCol]:setNumber(nil)
+            BoardHandler.board[baseTileRow][baseTileCol] = neighborNumber
+            BoardHandler.board[neighborRow][neighborCol] = nil
             return {
                 action = BoardHandler.ACTION_TILE_MOVED,
                 toRow = baseTileRow,
